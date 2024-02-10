@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import App from './App.tsx';
+import { App } from './App.tsx';
 import './index.css';
 import { QueryErrorBoundary } from './libs/tanstack/QueryErrorBoundary.tsx';
 import { QueryProvider } from './libs/tanstack/QueryProvider.tsx';
