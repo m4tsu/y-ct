@@ -1,12 +1,23 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import reactLogo from './assets/react.svg';
 
 import viteLogo from '/vite.svg';
+
 import './App.css';
+import { resasApiClient } from './libs/fetch/apiClient';
 
 function App() {
   const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    const getPrefectures = async () => {
+      const res = await resasApiClient('/prefectures', { method: 'GET' });
+      console.log({ res });
+    };
+
+    getPrefectures();
+  }, []);
 
   return (
     <>
