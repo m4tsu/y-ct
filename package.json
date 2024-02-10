@@ -4,9 +4,18 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "run-p dev:*",
+    "dev:vite": "vite",
+    "dev:scss": "typed-scss-modules src --watch",
     "build": "tsc && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "run-s -c lint:*",
+    "lint:eslint": "eslint src/**/*.{ts,tsx,cjs}",
+    "lint:prettier": "prettier --check src/**/*.{ts,tsx,js,jsx,cjs,json,md}",
+    "lint:markuplint": "markuplint src/**/*.tsx",
+    "lint:tsc": "tsc --noEmit",
+    "lint-fix": "run-s -c lint-fix:*",
+    "lint-fix:eslint": "eslint --fix src/**/*.{ts,tsx,cjs}",
+    "lint-fix:prettier": "prettier --write src/**/*.{ts,tsx,js,jsx,cjs,json,md}",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -14,14 +23,26 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@markuplint/jsx-parser": "^4.0.3",
+    "@markuplint/react-spec": "^4.0.1",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
+    "eslint-plugin-no-relative-import-paths": "^1.5.3",
+    "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "eslint-plugin-unused-imports": "^3.0.0",
+    "markuplint": "^4.0.3",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^3.2.5",
+    "typed-scss-modules": "^8.0.0",
     "typescript": "^5.2.2",
     "vite": "^5.1.0"
   }
