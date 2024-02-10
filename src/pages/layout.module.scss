@@ -1,0 +1,27 @@
+@use './utils.module.scss' as utils;
+
+.appContainer {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.header {
+  border-bottom: 1px solid gray;
+  padding-top: 0.6rem;
+  padding-bottom: 0.6rem;
+  font-weight: bold;
+  font-size: large;
+}
+
+.main {
+  flex-grow: 1;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.footer {
+  border-top: 1px solid gray;
+  padding-top: 0.6rem;
+  padding-bottom: 0.6rem;
+}
