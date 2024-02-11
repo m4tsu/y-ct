@@ -7,12 +7,12 @@ import type { FC } from 'react';
 type Props = {
   prefecture: Prefecture;
   checked: boolean;
-  toggle: (prefCode: Prefecture['prefCode']) => void;
+  onChange: (prefCode: Prefecture['prefCode']) => void;
 };
 export const PrefectureCheckbox: FC<Props> = ({
   prefecture,
   checked,
-  toggle,
+  onChange,
 }) => {
   const id = `${prefecture.prefCode}`;
 
@@ -22,7 +22,7 @@ export const PrefectureCheckbox: FC<Props> = ({
         type="checkbox"
         id={id}
         checked={checked}
-        onChange={() => toggle(prefecture.prefCode)}
+        onChange={() => onChange(prefecture.prefCode)}
       />
       <label htmlFor={id}>{prefecture.prefName}</label>
     </div>

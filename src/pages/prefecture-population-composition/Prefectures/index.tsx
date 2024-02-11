@@ -1,23 +1,52 @@
-import { useState, type FC, useCallback, memo } from 'react';
+import { useState, type FC, useCallback, memo, useMemo } from 'react';
 
+import type { Prefecture } from '@/domains/Prefecture';
 import { usePrefectures } from '@/pages/prefecture-population-composition/queries';
 
 import { PrefectureCheckbox as _PrefectureCheckbox } from './PrefectureCheckbox';
 import styles from './index.module.scss';
 
-type CheckedPrefectureMap = {
+type PrefectureSelection = {
   [prefCode: string]: boolean;
 };
 
 const PrefectureCheckbox = memo(_PrefectureCheckbox);
 
-export const Prefectures: FC = () => {
-  const { data: prefectures } = usePrefectures();
-  const [checkedPrefectures, setCheckedPrefectures] =
-    useState<CheckedPrefectureMap>(() => ({}));
+const usePrefectureSelection = (prefectures: Prefecture[]) => {
+  const [prefectureSelection, setPrefectureSelection] =
+    useState<PrefectureSelection>(() => {
+      return Object.fromEntries(
+        prefectures.map((prefecture) => [`${prefecture.prefCode}`, false]),
+      );
+    });
 
-  const handleCheckboxChange = useCallback((prefCode: number) => {
-    setCheckedPrefectures((prev) => {
+  const isChecked = useCallback(
+    (prefCode: Prefecture['prefCode']) => {
+      const checked = prefectureSelection[`${prefCode}`];
+      if (checked === undefined) {
+        throw new Error('invalid prefCode');
+      } else {
+        return checked;
+      }
+    },
+    [prefectureSelection],
+  );
+
+  const selecteddPrefectureCodes: Prefecture['prefCode'][] = useMemo(() => {
+    return Object.entries(prefectureSelection).reduce<Prefecture['prefCode'][]>(
+      (prev, current) => {
+        const [prefCode, selected] = current;
+        if (selected) {
+          prev.push(Number(prefCode));
+        }
+        return prev;
+      },
+      [],
+    );
+  }, [prefectureSelection]);
+
+  const toggle = useCallback((prefCode: number) => {
+    setPrefectureSelection((prev) => {
       const current = prev[`${prefCode}`];
       return {
         ...prev,
@@ -26,7 +55,17 @@ export const Prefectures: FC = () => {
     });
   }, []);
 
-  console.log(checkedPrefectures);
+  return {
+    prefectureSelection,
+    isChecked,
+    selecteddPrefectureCodes,
+    toggle,
+  };
+};
+
+export const Prefectures: FC = () => {
+  const { data: prefectures } = usePrefectures();
+  const { isChecked, toggle } = usePrefectureSelection(prefectures);
 
   return (
     <ul className={styles.prefectureList}>
@@ -34,8 +73,8 @@ export const Prefectures: FC = () => {
         <li key={prefecture.prefCode} className={styles.prefectureListItem}>
           <PrefectureCheckbox
             prefecture={prefecture}
-            checked={checkedPrefectures[`${prefecture.prefCode}`] ?? false}
-            toggle={handleCheckboxChange}
+            checked={isChecked(prefecture.prefCode)}
+            onChange={toggle}
           />
         </li>
       ))}
