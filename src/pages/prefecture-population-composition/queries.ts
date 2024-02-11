@@ -5,7 +5,7 @@ import {
 } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
-import { getpopulationComposition } from '@/api/prefectures/population/requests';
+import { getpopulationComposition } from '@/api/population/requests';
 import { getPrefectures } from '@/api/prefectures/requests';
 import type { PopulationComposition } from '@/domains/Population';
 import type { Prefecture } from '@/domains/Prefecture';
