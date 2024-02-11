@@ -61,7 +61,7 @@ export const Prefectures: FC = () => {
     usePrefectureSelection(prefectures);
 
   return (
-    <div>
+    <div className={styles.layuout}>
       <ul className={styles.prefectureList}>
         {prefectures.map((prefecture) => (
           <li key={prefecture.prefCode} className={styles.prefectureListItem}>

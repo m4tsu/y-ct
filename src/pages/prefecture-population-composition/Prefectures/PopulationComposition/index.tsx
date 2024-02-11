@@ -5,13 +5,15 @@ import { useRef, type FC, useState } from 'react';
 import type { Prefecture } from '@/domains/Prefecture';
 import { usePrefectureWithPopulationCompositions } from '@/pages/prefecture-population-composition/queries';
 
+import styles from './index.module.scss';
+
 type Props = {
   prefectures: Prefecture[];
 };
 export const PopulationComposition: FC<Props> = ({ prefectures }) => {
   const [selectedCompositionLabel, setSelectedCompositionLabel] =
     useState<string>();
-  const { isLoading, prefectureWithPopulationCompositions, compositionLabels } =
+  const { prefectureWithPopulationCompositions, compositionLabels } =
     usePrefectureWithPopulationCompositions(prefectures, {
       compositionLabel: selectedCompositionLabel,
     });
@@ -24,7 +26,7 @@ export const PopulationComposition: FC<Props> = ({ prefectures }) => {
   const options: Highcharts.Options | null = (() => {
     return {
       title: {
-        text: '人口構成',
+        text: '人口推移',
       },
       xAxis: {
         title: {
@@ -51,13 +53,9 @@ export const PopulationComposition: FC<Props> = ({ prefectures }) => {
   })();
 
   const chartComponentRef = useRef<HighchartsReact.RefObject | null>(null);
-  console.log({
-    prefectureWithPopulationCompositions,
-    isLoading,
-    selectedCompositionLabel,
-  });
+
   return (
-    <div>
+    <div className={styles.layout}>
       {compositionLabels.length > 0 ? (
         <select
           onChange={(e) => {
@@ -74,11 +72,13 @@ export const PopulationComposition: FC<Props> = ({ prefectures }) => {
         </select>
       ) : null}
 
-      <HighchartsReact
-        highcharts={Highcharts}
-        options={options}
-        ref={chartComponentRef}
-      />
+      <div className={styles.chartContainer}>
+        <HighchartsReact
+          highcharts={Highcharts}
+          options={options}
+          ref={chartComponentRef}
+        />
+      </div>
     </div>
   );
 };
