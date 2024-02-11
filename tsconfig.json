@@ -19,7 +19,8 @@
     "noUncheckedIndexedAccess": true,
     "noImplicitReturns": true,
     "noImplicitOverride": true,
-    "exactOptionalPropertyTypes": true,
+    // ライブラリの型定義との兼ね合いで面倒なので一旦無効化
+    // "exactOptionalPropertyTypes": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,

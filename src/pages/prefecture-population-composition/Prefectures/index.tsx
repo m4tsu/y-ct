@@ -20,7 +20,7 @@ const usePrefectureSelection = (prefectures: Prefecture[]) => {
       );
     });
 
-  const isChecked = useCallback(
+  const isSelected = useCallback(
     (prefCode: Prefecture['prefCode']) => {
       const checked = prefectureSelection[`${prefCode}`];
       if (checked === undefined) {
@@ -32,18 +32,9 @@ const usePrefectureSelection = (prefectures: Prefecture[]) => {
     [prefectureSelection],
   );
 
-  const selecteddPrefectureCodes: Prefecture['prefCode'][] = useMemo(() => {
-    return Object.entries(prefectureSelection).reduce<Prefecture['prefCode'][]>(
-      (prev, current) => {
-        const [prefCode, selected] = current;
-        if (selected) {
-          prev.push(Number(prefCode));
-        }
-        return prev;
-      },
-      [],
-    );
-  }, [prefectureSelection]);
+  const selectedPrefectures: Prefecture[] = useMemo(() => {
+    return prefectures.filter((prefecture) => isSelected(prefecture.prefCode));
+  }, [prefectures, isSelected]);
 
   const toggle = useCallback((prefCode: number) => {
     setPrefectureSelection((prev) => {
@@ -57,15 +48,15 @@ const usePrefectureSelection = (prefectures: Prefecture[]) => {
 
   return {
     prefectureSelection,
-    isChecked,
-    selecteddPrefectureCodes,
+    isSelected,
+    selectedPrefectures,
     toggle,
   };
 };
 
 export const Prefectures: FC = () => {
   const { data: prefectures } = usePrefectures();
-  const { isChecked, toggle } = usePrefectureSelection(prefectures);
+  const { isSelected, toggle } = usePrefectureSelection(prefectures);
 
   return (
     <ul className={styles.prefectureList}>
@@ -73,7 +64,7 @@ export const Prefectures: FC = () => {
         <li key={prefecture.prefCode} className={styles.prefectureListItem}>
           <PrefectureCheckbox
             prefecture={prefecture}
-            checked={isChecked(prefecture.prefCode)}
+            checked={isSelected(prefecture.prefCode)}
             onChange={toggle}
           />
         </li>
