@@ -1,6 +1,6 @@
 import {
   queryOptions,
-  useQuery,
+  useQueries,
   useSuspenseQuery,
 } from '@tanstack/react-query';
 
@@ -17,17 +17,21 @@ export const usePrefectures = () => {
   return useSuspenseQuery(prefecturesQuery);
 };
 
-type PopulationCompositionVariables = {
-  prefCode: Prefecture['prefCode'];
-};
 const populationCompositionQuery = ({
   prefCode,
-}: PopulationCompositionVariables) =>
+}: {
+  prefCode: Prefecture['prefCode'];
+}) =>
   queryOptions({
     queryKey: ['populationComposition', { prefCode }],
     queryFn: () => getpopulationComposition({ prefCode, cityCode: '-' }),
   });
-
-export const usePopulationComposition = (prefCode: Prefecture['prefCode']) => {
-  return useQuery(populationCompositionQuery({ prefCode }));
+export const usePopulationCompositions = (
+  prefCodes: Prefecture['prefCode'][],
+) => {
+  return useQueries({
+    queries: prefCodes.map((prefCode) =>
+      populationCompositionQuery({ prefCode }),
+    ),
+  });
 };

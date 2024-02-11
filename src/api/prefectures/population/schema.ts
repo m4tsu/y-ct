@@ -1,4 +1,4 @@
-export type GetPopulationCompositionRequest = {
+export type GetPopulationCompositionRequestParams = {
   prefCode: number;
   /**
    * 市区町村コード「すべての市区町村」を選択する場合は「-」を送ります。

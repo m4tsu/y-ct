@@ -2,17 +2,22 @@ import type { PopulationCompositions } from '@/domains/Population';
 import { resasApiClient } from '@/libs/fetch/apiClient';
 
 import type {
-  GetPopulationCompositionRequest,
+  GetPopulationCompositionRequestParams,
   GetPopulationCompositionResponse,
 } from './schema';
 
-type Params = GetPopulationCompositionRequest;
+type Params = GetPopulationCompositionRequestParams;
 export const getpopulationComposition = async (
   params: Params,
 ): Promise<PopulationCompositions> => {
-  const res = await resasApiClient<
-    GetPopulationCompositionResponse,
-    GetPopulationCompositionRequest
-  >('/population/composition/perYear', { method: 'Get', body: params });
+  const searchParams = new URLSearchParams({
+    prefCode: String(params.prefCode),
+    cityCode: params.cityCode,
+  });
+  const res = await resasApiClient<GetPopulationCompositionResponse>(
+    '/population/composition/perYear',
+    { method: 'Get' },
+    searchParams,
+  );
   return res.result;
 };
