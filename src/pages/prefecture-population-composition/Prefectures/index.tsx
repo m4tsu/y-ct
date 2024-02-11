@@ -3,6 +3,7 @@ import { useState, type FC, useCallback, memo, useMemo } from 'react';
 import type { Prefecture } from '@/domains/Prefecture';
 import { usePrefectures } from '@/pages/prefecture-population-composition/queries';
 
+import { PopulationComposition } from './PopulationComposition';
 import { PrefectureCheckbox as _PrefectureCheckbox } from './PrefectureCheckbox';
 import styles from './index.module.scss';
 
@@ -56,19 +57,23 @@ const usePrefectureSelection = (prefectures: Prefecture[]) => {
 
 export const Prefectures: FC = () => {
   const { data: prefectures } = usePrefectures();
-  const { isSelected, toggle } = usePrefectureSelection(prefectures);
+  const { isSelected, toggle, selectedPrefectures } =
+    usePrefectureSelection(prefectures);
 
   return (
-    <ul className={styles.prefectureList}>
-      {prefectures.map((prefecture) => (
-        <li key={prefecture.prefCode} className={styles.prefectureListItem}>
-          <PrefectureCheckbox
-            prefecture={prefecture}
-            checked={isSelected(prefecture.prefCode)}
-            onChange={toggle}
-          />
-        </li>
-      ))}
-    </ul>
+    <div>
+      <ul className={styles.prefectureList}>
+        {prefectures.map((prefecture) => (
+          <li key={prefecture.prefCode} className={styles.prefectureListItem}>
+            <PrefectureCheckbox
+              prefecture={prefecture}
+              checked={isSelected(prefecture.prefCode)}
+              onChange={toggle}
+            />
+          </li>
+        ))}
+      </ul>
+      <PopulationComposition prefectures={selectedPrefectures} />
+    </div>
   );
 };
