@@ -1,6 +1,6 @@
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import { useRef, type FC, useState } from 'react';
+import { useRef, type FC, useState, useId } from 'react';
 
 import type { Prefecture } from '@/domains/Prefecture';
 import { usePrefectureWithPopulationCompositions } from '@/pages/prefecture-population-composition/queries';
@@ -53,26 +53,30 @@ export const PopulationComposition: FC<Props> = ({ prefectures }) => {
   })();
 
   const chartComponentRef = useRef<HighchartsReact.RefObject | null>(null);
+  const selectId = useId();
 
   return (
     <div className={styles.layout}>
       {compositionLabels.length > 0 ? (
-        <select
-          onChange={(e) => {
-            setSelectedCompositionLabel(e.target.value);
-          }}
-        >
-          {compositionLabels.map((label) => {
-            return (
-              <option key={label} value={label}>
-                {label}
-              </option>
-            );
-          })}
-        </select>
+        <div className={styles.selectContainer}>
+          <label htmlFor={selectId}>種別</label>
+          <select
+            id={selectId}
+            onChange={(e) => {
+              setSelectedCompositionLabel(e.target.value);
+            }}
+          >
+            {compositionLabels.map((label) => {
+              return (
+                <option key={label} value={label}>
+                  {label}
+                </option>
+              );
+            })}
+          </select>
+        </div>
       ) : null}
-
-      <div className={styles.chartContainer}>
+      <div className={styles.chartContainer} data-testid="chart-container">
         <HighchartsReact
           highcharts={Highcharts}
           options={options}

@@ -7,6 +7,12 @@
   width: 100%;
 }
 
+.selectContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 0.2rem;
+}
+
 .chartContainer {
   width: 100%;
   > div {
