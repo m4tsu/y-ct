@@ -42,38 +42,26 @@ test('都道府県にチェックを入れると人口構成情報が取得さ�
   expect(legends[0]).toHaveTextContent('北海道');
 });
 
-// test('人口推移の種類を選択するとグラフが更新される', async () => {
-//   const { container } = render(<PrefecturePopulationCompositionPage />);
+test('人口推移の種類を選択するとグラフが更新される', async () => {
+  render(<PrefecturePopulationCompositionPage />);
 
-//   const checkbox = await screen.findByRole('checkbox', {
-//     name: '北海道',
-//   });
-//   await userEvent.click(checkbox);
+  const checkbox = await screen.findByRole('checkbox', {
+    name: '北海道',
+  });
+  await userEvent.click(checkbox);
 
-//   /** 総人口時のY軸のラベル */
-//   const soujinkouYLabels = Array.from(
-//     container.getElementsByClassName('highcharts-yaxis-labels'),
-//   ).flatMap((el) =>
-//     Array.from(el.getElementsByTagName('text')).map(
-//       (el) => el.textContent ?? '',
-//     ),
-//   );
+  // NTOE: Y軸のラベルがデータの値によって具体的にどのように変化するかを確認したいが、Highchartの詳細について調査に時間がかかりそうなのでとりあえず変化することだけチェックしている
 
-//   const select = await screen.findByRole('combobox', { name: '種別' });
-//   await userEvent.click(select);
-//   // 種類が選択できる
-//   expect(screen.getByRole('option', { name: '総人口' })).toBeInTheDocument();
-//   expect(screen.getByRole('option', { name: '年少人口' })).toBeInTheDocument();
-//   await userEvent.selectOptions(select, '年少人口');
+  // 総人口 時のY軸のラベルの一部
+  expect(screen.getByText('5 000k')).toBeInTheDocument();
 
-//   const nenshouJinkouYLabels = Array.from(
-//     container.getElementsByClassName('highcharts-yaxis-labels'),
-//   ).flatMap((el) =>
-//     Array.from(el.getElementsByTagName('text')).map(
-//       (el) => el.textContent ?? '',
-//     ),
-//   );
+  // 種類が選択できる
+  const select = await screen.findByRole('combobox', { name: '種別' });
+  await userEvent.click(select);
+  expect(screen.getByRole('option', { name: '総人口' })).toBeInTheDocument();
+  expect(screen.getByRole('option', { name: '年少人口' })).toBeInTheDocument();
+  await userEvent.selectOptions(select, '年少人口');
 
-//   // 総人口時のY軸のラベルと年少人口時のY軸のラベルが異なる
-//   expect(soujinkouYLabels).toEqual(nenshouJinkouYLabels);
-// });
+  // 総人口 時のY軸のラベルが変わっている
+  expect(await screen.queryByText('5 000k')).not.toBeInTheDocument();
+});
