@@ -65,6 +65,7 @@ export const PopulationComposition: FC<Props> = ({ prefectures }) => {
             onChange={(e) => {
               setSelectedCompositionLabel(e.target.value);
             }}
+            value={selectedCompositionLabel}
           >
             {compositionLabels.map((label) => {
               return (
