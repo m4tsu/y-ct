@@ -1,5 +1,7 @@
 import { http, HttpResponse } from 'msw';
 
+import { baseUrl } from '@/libs/fetch/apiClient';
+
 import type { GetPrefecturesResponse } from './schema';
 
 const getPrefecturesSuccessResponse: GetPrefecturesResponse = {
@@ -18,7 +20,7 @@ const getPrefecturesSuccessResponse: GetPrefecturesResponse = {
 
 export const handlers = [
   http.get<never, never, GetPrefecturesResponse>(
-    'https://opendata.resas-portal.go.jp/api/v1/prefectures',
+    `${baseUrl}/api/v1/prefectures`,
     () => {
       return HttpResponse.json<GetPrefecturesResponse>(
         getPrefecturesSuccessResponse,

@@ -14,5 +14,9 @@ export default defineConfig({
     globals: true,
     setupFiles: ['./vitest.setup.ts'],
     environment: 'jsdom',
+    env: {
+      VITE_RESAS_API_BASE_URL: 'https://test-api.example.com',
+      VITE_RESAS_API_KEY: 'test-key',
+    },
   },
 });

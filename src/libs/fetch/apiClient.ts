@@ -1,11 +1,17 @@
 import { NetworkError, ServerError } from './errors';
 
-const baseUrl = import.meta.env.VITE_RESAS_API_BASE_URL;
+const _baseUrl = import.meta.env.VITE_RESAS_API_BASE_URL;
 const basePath = '/api/v1';
 const apiKey = import.meta.env.VITE_RESAS_API_KEY;
+
+if (typeof _baseUrl !== 'string') {
+  throw new Error('env.VITE_RESAS_API_BASE_URL is not defined');
+}
 if (typeof apiKey !== 'string') {
   throw new Error('env.VITE_RESAS_API_KEY is not defined');
 }
+
+export const baseUrl = _baseUrl;
 
 type FetchOptions<ReqBody = undefined> = ReqBody extends undefined
   ? Omit<RequestInit, 'body'> & { body?: undefined }

@@ -1,5 +1,7 @@
 import { http, HttpResponse } from 'msw';
 
+import { baseUrl } from '@/libs/fetch/apiClient';
+
 import type { GetPopulationCompositionResponse } from './schema';
 const getpopulationCompositionSuccessResponse: GetPopulationCompositionResponse =
   {
@@ -167,7 +169,7 @@ const getpopulationCompositionSuccessResponse: GetPopulationCompositionResponse 
 
 export const handlers = [
   http.get<never, never, GetPopulationCompositionResponse>(
-    'https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear',
+    `${baseUrl}/api/v1/population/composition/perYear`,
     () => {
       return HttpResponse.json<GetPopulationCompositionResponse>(
         getpopulationCompositionSuccessResponse,
