@@ -1,11 +1,11 @@
 import { useState, type FC, useCallback, memo, useMemo } from 'react';
 
 import type { Prefecture } from '@/domains/Prefecture';
-import { usePrefectures } from '@/pages/prefecture-population-composition/queries';
 
 import { PopulationComposition } from './PopulationComposition';
 import { PrefectureCheckbox as _PrefectureCheckbox } from './PrefectureCheckbox';
 import styles from './index.module.scss';
+import { usePrefectures } from './usePrefectures';
 
 type PrefectureSelection = {
   [prefCode: string]: boolean;

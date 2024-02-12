@@ -3,9 +3,9 @@ import HighchartsReact from 'highcharts-react-official';
 import { useRef, type FC, useState, useId } from 'react';
 
 import type { Prefecture } from '@/domains/Prefecture';
-import { usePrefectureWithPopulationCompositions } from '@/pages/prefecture-population-composition/queries';
 
 import styles from './index.module.scss';
+import { usePrefectureWithPopulationCompositions } from './usePrefectureWithPopulationCompositions';
 
 type Props = {
   prefectures: Prefecture[];
