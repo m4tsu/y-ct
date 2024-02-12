@@ -1,7 +1,8 @@
 # Y社コーディング課題
 
 ## デプロイ先
-Todo
+vercel
+https://y-ct-im48.vercel.app/
 
 ## セットアップ
 ```bash
