@@ -1,6 +1,6 @@
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import { useRef, type FC, useState, useId } from 'react';
+import { useRef, type FC, useState, useId, useMemo } from 'react';
 
 import type { Prefecture } from '@/domains/Prefecture';
 
@@ -18,12 +18,12 @@ export const PopulationComposition: FC<Props> = ({ prefectures }) => {
       compositionLabel: selectedCompositionLabel,
     });
 
-  // 年のリストは全てのデータが同一であると想定して1つ目のデータから取得
-  const years: string[] | undefined =
-    prefectureWithPopulationCompositions[0]?.populationCompositions.map(
-      (composition) => composition.year.toString(),
-    );
-  const options: Highcharts.Options | null = (() => {
+  const options: Highcharts.Options | null = useMemo(() => {
+    // 年のリストは全てのデータが同一であると想定して1つ目のデータから取得
+    const years: string[] | undefined =
+      prefectureWithPopulationCompositions[0]?.populationCompositions.map(
+        (composition) => String(composition.year),
+      );
     return {
       title: {
         text: '人口推移',
@@ -50,7 +50,7 @@ export const PopulationComposition: FC<Props> = ({ prefectures }) => {
         };
       }),
     };
-  })();
+  }, [prefectureWithPopulationCompositions]);
 
   const chartComponentRef = useRef<HighchartsReact.RefObject | null>(null);
   const selectId = useId();
