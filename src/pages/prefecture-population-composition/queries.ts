@@ -29,13 +29,6 @@ const populationCompositionQuery = ({ prefCode, prefName }: Prefecture) =>
       populationCompositions: data.data,
     }),
   });
-export const usePopulationCompositionsQuery = (prefectures: Prefecture[]) => {
-  return useQueries({
-    queries: prefectures.map((prefecture) =>
-      populationCompositionQuery(prefecture),
-    ),
-  });
-};
 
 type PrefectureWithPopulationCompositions = Prefecture & {
   compositionLabel: string;
@@ -48,8 +41,11 @@ export const usePrefectureWithPopulationCompositions = (
   prefectures: Prefecture[],
   filter: Filter,
 ) => {
-  const results = usePopulationCompositionsQuery(prefectures);
-  const isLoading = results.some((result) => result.isLoading);
+  const results = useQueries({
+    queries: prefectures.map((prefecture) =>
+      populationCompositionQuery(prefecture),
+    ),
+  });
 
   const compositionLabels = useMemo(() => {
     return (
@@ -58,6 +54,7 @@ export const usePrefectureWithPopulationCompositions = (
       ) ?? []
     );
   }, [results]);
+
   const prefectureWithPopulationCompositions: PrefectureWithPopulationCompositions[] =
     useMemo(() => {
       return results.flatMap((result) => {
@@ -86,5 +83,5 @@ export const usePrefectureWithPopulationCompositions = (
       });
     }, [results, filter, compositionLabels]);
 
-  return { isLoading, prefectureWithPopulationCompositions, compositionLabels };
+  return { prefectureWithPopulationCompositions, compositionLabels };
 };
