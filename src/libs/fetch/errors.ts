@@ -4,7 +4,7 @@ type ErrorOptions = {
 };
 
 export class ServerError extends Error {
-  override readonly name = "ServerError";
+  override readonly name = 'ServerError';
   status?: number | undefined;
   constructor(message: string, options: ErrorOptions = {}) {
     super(message, { cause: options.cause });
@@ -13,7 +13,7 @@ export class ServerError extends Error {
 }
 
 export class NetworkError extends Error {
-  override readonly name = "NetworkError";
+  override readonly name = 'NetworkError';
   constructor(message: string, options: ErrorOptions = {}) {
     super(message, { cause: options.cause });
   }
