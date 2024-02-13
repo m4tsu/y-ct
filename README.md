@@ -2,7 +2,7 @@
 
 ## デプロイ先
 vercel
-https://y-ct-im48.vercel.app/
+https://y-ct.vercel.app/
 
 ## セットアップ
 ```bash
